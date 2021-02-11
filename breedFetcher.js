@@ -24,14 +24,14 @@ const allBreeds = (callback) => {
 const getBreedInfo = (targetBreed, callback) => {
   request(`https://api.thecatapi.com/v1/breeds/search?q=${targetBreed}`, (error, response, body) => {
     if (targetBreed === undefined) {
-      console.log(`You need to specify a cat breed first :) type 'all' to get a list of all breeds!`);
+      callback(null, `You need to specify a cat breed first :) type 'all' to get a list of all breeds!`);
     } else if (!error) {
       let data = JSON.parse(body);
       
       if (data.length === 0) {
-        console.log(`Sorry, there is no such thing as a ${targetBreed} cat!`);
+        callback(null, `Sorry, there is no such thing as a ${targetBreed} cat!`);
       } else {
-        console.log(data[0].description);
+        callback(null, data[0].description);
       }
     }
     if (error) {
