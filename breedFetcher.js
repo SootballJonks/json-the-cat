@@ -1,8 +1,7 @@
 const request = require('request');
-const breed = process.argv[2];
 
 
-const allBreeds = () => {
+const allBreeds = (callback) => {
   let breedList = [];
   request(`https://api.thecatapi.com/v1/breeds`, (error, response, body) => {
     if (!error) {
@@ -21,14 +20,12 @@ const allBreeds = () => {
   });
 };
 
-if (breed === 'all') {
-  allBreeds();
-}
 
-
-const getBreedInfo = (targetBreed) => {
+const getBreedInfo = (targetBreed, callback) => {
   request(`https://api.thecatapi.com/v1/breeds/search?q=${targetBreed}`, (error, response, body) => {
-    if (!error) {
+    if (targetBreed === undefined) {
+      console.log(`You need to specify a cat breed first :) type 'all' to get a list of all breeds!`);
+    } else if (!error) {
       let data = JSON.parse(body);
       
       if (data.length === 0) {
@@ -46,5 +43,10 @@ const getBreedInfo = (targetBreed) => {
   });
 };
 
-getBreedInfo(breed);
+module.exports = {
+  getBreedInfo,
+  allBreeds
+};
+
+
 
